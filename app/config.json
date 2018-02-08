@@ -1,0 +1,8 @@
+{
+  "greetText": "Hi, There and greeting from json",
+  "head": {
+    "name": "NAME",
+    "age": "AGE",
+    "sex": "SEX"
+  }
+}
