@@ -4,8 +4,10 @@
   "description": "react with webpack",
   "main": "index.js",
   "dependencies": {
+    "bootstrap": "^4.0.0",
     "react": "^16.2.0",
-    "react-dom": "^16.2.0"
+    "react-dom": "^16.2.0",
+    "reactstrap": "^5.0.0-beta"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",

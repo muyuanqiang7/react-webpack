@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import config from './config.json';
 import styles from './Greeter.css';
 import Table from './Table';
+import {Button} from 'reactstrap'
 
 class ActionLink extends Component {
     constructor(props) {
@@ -56,6 +57,7 @@ class Greeter extends Component {
 
     render() {
         const messages = ['React', 'Re: React', 'Re:Re: React'];
+        const numbers = [1, 2, 3, 4, 5];
         return (
             <div className={styles.root}>
                 <h1>{config.greetText}</h1>
@@ -68,6 +70,9 @@ class Greeter extends Component {
                 <LogginControl/>
                 <MailBox unreadMessages={messages}/>
                 <Page/>
+                <NumberList numbers={numbers}/>
+                <NameForm/>
+                <EssayForm/>
             </div>
         );
     }
@@ -206,6 +211,85 @@ class Page extends Component {
                 <button onClick={this.handleToggleClick}>{this.state.warn ? "Show" : "Hide"}</button>
             </div>
 
+        );
+    }
+}
+
+/**
+ * list and keys
+ */
+
+class NumberList extends Component {
+    render() {
+        const numbers = this.props.numbers;
+        const itemList = numbers.map((number) => {
+            return <li key={number.toString()}>{number}</li>
+        });
+        return (<ul>{itemList}</ul>);
+    }
+}
+
+class NameForm extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {value: ''};
+
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    handleChange(event) {
+        this.setState({value: event.target.value});
+    }
+
+    handleSubmit(event) {
+        alert('A name was submitted: ' + this.state.value);
+        event.preventDefault();
+    }
+
+    render() {
+        return (
+            <form onSubmit={this.handleSubmit}>
+                <label>
+                    Name:
+                    <input type="text" value={this.state.value} onChange={this.handleChange}/>
+                </label>
+                <input type="submit" value="Submit"/>
+            </form>
+        );
+    }
+}
+
+class EssayForm extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            value: 'Please write an essay about your favorite DOM element.'
+        };
+
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    handleChange(event) {
+        this.setState({value: event.target.value});
+    }
+
+    handleSubmit(event) {
+        alert('An essay was submitted: ' + this.state.value);
+        event.preventDefault();
+    }
+
+    render() {
+        return (
+            <form onSubmit={this.handleSubmit}>
+                <label col="12">
+                    Essay:
+                    <textarea value={this.state.value} onChange={this.handleChange}/>
+                </label>
+                <input type="submit" value="Submit"/>
+                <Button color="danger">Danger!</Button>
+            </form>
         );
     }
 }
