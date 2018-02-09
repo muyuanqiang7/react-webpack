@@ -4,7 +4,10 @@
   "description": "react with webpack",
   "main": "index.js",
   "dependencies": {
+    "axios": "^0.17.1",
     "bootstrap": "^4.0.0",
+    "form-serialize": "^0.7.2",
+    "jquery": "^1.9.1",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "reactstrap": "^5.0.0-beta"
@@ -22,7 +25,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack",
-    "server": "webpack-dev-server --open"
+    "server": "webpack-dev-server --open",
+    "build": "webpack"
   },
   "author": "muyuanqiang7",
   "license": "ISC"

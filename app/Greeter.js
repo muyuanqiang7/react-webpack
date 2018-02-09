@@ -2,7 +2,10 @@ import React, {Component} from 'react';
 import config from './config.json';
 import styles from './Greeter.css';
 import Table from './Table';
-import {Button} from 'reactstrap'
+import {Button, Form, FormGroup, Label, Input, FormText, Container, Col} from 'reactstrap'
+import axios from 'axios'
+
+import serialize from "form-serialize";
 
 class ActionLink extends Component {
     constructor(props) {
@@ -45,7 +48,7 @@ class LogginButton extends Component {
 class Greeter extends Component {
     constructor(props) {
         super(props);
-        this.state = {date: new Date(), toggle: true, status: 'Stop'};
+        this.state = {date: new Date(), toggle: false, status: 'Stop'};
         this.handleClick = this.handleClick.bind(this);
     }
 
@@ -60,18 +63,18 @@ class Greeter extends Component {
         const numbers = [1, 2, 3, 4, 5];
         return (
             <div className={styles.root}>
-                <h1>{config.greetText}</h1>
-                <h2>It is {this.state.date.toLocaleTimeString()}.</h2>
-                <Table/>
-                <ActionLink handleClick={this.handleClick} value={this.state.status}/>
-                <br/>
+                {/*<h1>{config.greetText}</h1>*/}
+                {/*<h2>It is {this.state.date.toLocaleTimeString()}.</h2>*/}
+                {/*<Table/>*/}
+                {/*<ActionLink handleClick={this.handleClick} value={this.state.status}/>*/}
+                {/*<br/>*/}
                 {/*<LoggingBtn/>*/}
                 {/*<LogginButton/>*/}
-                <LogginControl/>
-                <MailBox unreadMessages={messages}/>
-                <Page/>
-                <NumberList numbers={numbers}/>
-                <NameForm/>
+                {/*<LogginControl/>*/}
+                {/*<MailBox unreadMessages={messages}/>*/}
+                {/*<Page/>*/}
+                {/*<NumberList numbers={numbers}/>*/}
+                {/*<NameForm/>*/}
                 <EssayForm/>
             </div>
         );
@@ -250,7 +253,7 @@ class NameForm extends React.Component {
     render() {
         return (
             <form onSubmit={this.handleSubmit}>
-                <label>
+                <label className="col-md-4">
                     Name:
                     <input type="text" value={this.state.value} onChange={this.handleChange}/>
                 </label>
@@ -276,20 +279,120 @@ class EssayForm extends React.Component {
     }
 
     handleSubmit(event) {
-        alert('An essay was submitted: ' + this.state.value);
         event.preventDefault();
+        const formData = serialize(event.target, {hash: true, disabled: true, empty: true});
+        console.log(formData);
+        axios.get("http://localhost:8090/index/userInfo", {
+            // headers: {'Access-Control-Allow-Origin': '*'}
+        }).then(function (response) {
+            console.log(response);
+        }).catch(function (error) {
+            console.log(error);
+        })
+    }
+
+    handleClick(event) {
+        console.log(event);
     }
 
     render() {
         return (
-            <form onSubmit={this.handleSubmit}>
-                <label col="12">
-                    Essay:
-                    <textarea value={this.state.value} onChange={this.handleChange}/>
-                </label>
-                <input type="submit" value="Submit"/>
-                <Button color="danger">Danger!</Button>
-            </form>
+            <Container>
+                <Col sm={{size: 8, offset: 2}}>
+                    <Form onSubmit={this.handleSubmit}>
+                        <FormGroup row>
+                            <Label for="exampleEmail" sm={2}>Email</Label>
+                            <Col sm={10}>
+                                <Input type="email" name="email" id="exampleEmail" placeholder="email address"/>
+                                <FormText color="muted">We will never share your email with any one.</FormText>
+                            </Col>
+                        </FormGroup>
+                        <FormGroup row>
+                            <Label for="examplePassword" sm={2}>Password</Label>
+                            <Col sm={10}>
+                                <Input type="password" name="password" id="examplePassword"
+                                       placeholder="password"/>
+                            </Col>
+                        </FormGroup>
+                        <FormGroup row>
+                            <Label for="exampleSelect" sm={2}>Select</Label>
+                            <Col sm={10}>
+                                <Input type="select" name="select" id="exampleSelect">
+                                    <option value="0">男</option>
+                                    <option value="1">女</option>
+                                    <option value="2">未知</option>
+                                </Input>
+                            </Col>
+                        </FormGroup>
+                        <FormGroup row>
+                            <Label for="exampleSelectMulti" sm={2}>Select Multiple</Label>
+                            <Col sm={10}>
+                                <Input type="select" name="selectMulti" id="exampleSelectMulti" multiple>
+                                    <option value="football">足球</option>
+                                    <option value="basketball">篮球</option>
+                                    <option value="tennis">网球</option>
+                                    <option value="swim">游泳</option>
+                                    <option value="skateBoard">滑板</option>
+                                </Input>
+                            </Col>
+                        </FormGroup>
+                        <FormGroup row>
+                            <Label for="exampleText" sm={2}>Text Area</Label>
+                            <Col sm={10}>
+                                <Input type="textarea" name="text" id="exampleText"/>
+                            </Col>
+                        </FormGroup>
+                        {/*<FormGroup row>*/}
+                        {/*<Label for="exampleFile" sm={2}>File</Label>*/}
+                        {/*<Col sm={10}>*/}
+                        {/*<Input type="file" name="file" id="exampleFile"/>*/}
+                        {/*<FormText color="muted">*/}
+                        {/*This is some placeholder block-level help text for the above input.*/}
+                        {/*It's a bit lighter and easily wraps to a new line.*/}
+                        {/*</FormText>*/}
+                        {/*</Col>*/}
+                        {/*</FormGroup>*/}
+                        <FormGroup tag="fieldset" row>
+                            <legend className="col-form-label col-sm-3">Radio Buttons</legend>
+                            <Col sm={9}>
+                                <FormGroup check>
+                                    <Label check>
+                                        <Input type="radio" name="radio2"/>{' '}
+                                        Option one is this and that—be sure to include why it's great
+                                    </Label>
+                                </FormGroup>
+                                <FormGroup check>
+                                    <Label check>
+                                        <Input type="radio" name="radio2"/>{' '}
+                                        Option two can be something else and selecting it will deselect option one
+                                    </Label>
+                                </FormGroup>
+                                <FormGroup check disabled>
+                                    <Label check>
+                                        <Input type="radio" name="radio2"/>{' '}
+                                        Option three is disabled
+                                    </Label>
+                                </FormGroup>
+                            </Col>
+                        </FormGroup>
+                        <FormGroup row>
+                            <Col sm={{size: 4, offset: 4}}>
+                                <FormGroup check>
+                                    <Label check>
+                                        <Input type="checkbox" id="checkbox2" name="checkbox2"/>{' '}
+                                        Check me out
+                                    </Label>
+                                </FormGroup>
+                            </Col>
+                        </FormGroup>
+                        <FormGroup check row>
+                            <Col sm={{size: 4, offset: 4}}>
+                                <Button color="primary">Submit</Button>
+                            </Col>
+                        </FormGroup>
+                    </Form>
+                </Col>
+            </Container>
         );
     }
 }
